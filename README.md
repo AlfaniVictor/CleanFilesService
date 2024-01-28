@@ -1,4 +1,4 @@
-# TesteLoopMidNight
+# CleanFiles
 * Change the build to Release;
 * Go to project properties --> Debug / Build;
   ![image](https://github.com/AlfaniVictor/CleanFilesService/assets/39637213/aae83062-fc3f-4423-a14d-e565e0e53ca0)
