@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D67D2943-55F6-4F75-81B7-9BF603FA8161}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TesteLoopMidNight</RootNamespace>
-    <AssemblyName>TesteLoopMidNight</AssemblyName>
+    <RootNamespace>CleanFiles</RootNamespace>
+    <AssemblyName>CleanFiles</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

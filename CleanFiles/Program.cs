@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using Topshelf;
+﻿using Topshelf;
 
-namespace TesteLoopMidNight
+namespace CleanFiles
 {
     internal class Program
     {

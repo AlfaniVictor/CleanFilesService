@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TesteLoopMidNight.Object;
+using CleanFiles.Object;
 using System.Text.Json;
 using System.Reflection;
 using System.IO;
@@ -8,8 +8,9 @@ using Topshelf;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
-namespace TesteLoopMidNight
+namespace CleanFiles
 {
     public class Process : ServiceControl
     {
@@ -26,7 +27,7 @@ namespace TesteLoopMidNight
         private static DateTime NextDay;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private static Stopwatch stopwatch = new Stopwatch();
-        private static int IntervaloSegundos = 1;
+        private static int SecondsInterval = 1;
 
         public Process()
         {
@@ -40,7 +41,7 @@ namespace TesteLoopMidNight
                 stopwatch.Start();
                 while (true)
                 {
-                    if (VerificarTempoPassado())
+                    if (VerifyTime())
                     {
                         ProcessLogic();
                         stopwatch.Restart();
@@ -71,31 +72,36 @@ namespace TesteLoopMidNight
                             string strJson = GetAndReadJsonFile();
                             obj = JsonSerializer.Deserialize<jsonObject>(strJson);
                             cycle = LOOP.VERIFY_TIME;
-                            break;
+
+                            goto case LOOP.VERIFY_TIME;
                         }
                     case LOOP.VERIFY_TIME:
                         {
                             if (DateTime.Now.Hour == obj.HourToClean)
+                            {
                                 cycle = LOOP.CLEAN_DIRECTORY;
+                                goto case LOOP.CLEAN_DIRECTORY;
+                            }
                             else
-                                IntervaloSegundos = obj.TimeMinToProcess;
+                                SecondsInterval = obj.TimeMinToProcess;
 
                             break;
                         }
                     case LOOP.CLEAN_DIRECTORY:
                         {
-                            IntervaloSegundos = obj.TimeMinToProcess;
+                            SecondsInterval = obj.TimeMinToProcess;
                             string[] files = Directory.GetFiles(obj.FolderToClean);
                             files.ToList().ForEach(file => File.Delete(file));
                             alreadyProcessed = true;
-                            NextDay = DateTime.Now.AddDays(1);
+                            NextDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
                             break;
                         }
                 }
             }
             else
             {
-                if (DateTime.Now == NextDay)
+                DateTime data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                if (DateTime.Now.Day == NextDay.Day)
                     alreadyProcessed = false;
             }
         }
@@ -111,11 +117,9 @@ namespace TesteLoopMidNight
             return json;
         }
 
-        private static bool VerificarTempoPassado()
+        private static bool VerifyTime()
         {
-            return stopwatch.Elapsed.TotalSeconds >= IntervaloSegundos;
+            return stopwatch.Elapsed.TotalSeconds >= SecondsInterval;
         }
-
-        
     }
 }

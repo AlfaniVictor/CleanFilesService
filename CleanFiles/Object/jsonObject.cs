@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TesteLoopMidNight.Object
+namespace CleanFiles.Object
 {
     public class jsonObject
     {
@@ -10,7 +10,10 @@ namespace TesteLoopMidNight.Object
         public int TimeMinToProcess
         {
             get => timeMinToProcess;
-            set => value *= 60000;
+            set 
+            {
+                timeMinToProcess = timeMinToProcess * 60; 
+            }
         }
     }
 }
